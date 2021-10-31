@@ -42,22 +42,23 @@ for i in range(10):
 
 env.close()
 """
-#Setting up AGent-2 Parking Gym ENV
+"""
+Setting up AGent-2 Parking Gym ENV
 env = gym.make("parking-v0")
-#Random action
-# for i in range(10):
-#     done = False
-#     env.reset()
-#     while not done:
-#         env.render()
-#         action = env.action_space.sample()
-#         next_state, reward, done, info = env.step(action)
-#         print(info)
-#         print(done)
+Random action
+for i in range(10):
+    done = False
+    env.reset()
+    while not done:
+        env.render()
+        action = env.action_space.sample()
+        next_state, reward, done, info = env.step(action)
+        print(info)
+        print(done)
 
-# env.close()
+env.close()
 
-#Training our Agent-2
+Training our Agent-2
 model = HER("MlpPolicy", env, SAC, n_sampled_goal=4, goal_selection_strategy="future", verbose=2)
 model.learn(1000)
 
@@ -77,3 +78,4 @@ for i in range(10):
         print(done)
 
 env.close()
+"""
