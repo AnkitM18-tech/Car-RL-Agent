@@ -43,9 +43,9 @@ for i in range(10):
 env.close()
 """
 """
-Setting up AGent-2 Parking Gym ENV
+#Setting up AGent-2 Parking Gym ENV
 env = gym.make("parking-v0")
-Random action
+#Random action
 for i in range(10):
     done = False
     env.reset()
@@ -58,7 +58,7 @@ for i in range(10):
 
 env.close()
 
-Training our Agent-2
+#Training our Agent-2
 model = HER("MlpPolicy", env, SAC, n_sampled_goal=4, goal_selection_strategy="future", verbose=2)
 model.learn(1000)
 
@@ -79,3 +79,56 @@ for i in range(10):
 
 env.close()
 """
+#Agent-3 Highway agent
+env = gym.make("merge-v0")
+#Random action
+for i in range(10):
+    done = False
+    env.reset()
+    while not done:
+        env.render()
+        action = env.action_space.sample()
+        next_state, reward, done, info = env.step(action)
+        print(info)
+        print(done)
+
+env.close()
+
+#Creating agent model and train
+model = DQN("MlpPolicy", env, verbose=1)
+model.learn(1000)
+model2 = PPO2("MlpPolicy",env,verbose=1)
+model2.learn(1000)
+
+#Visualizing Agent-3
+for i in range(10):
+    done=False
+    obs = env.reset()
+    while not done:
+        env.render()
+        action, _states = model.predict(obs)
+        next_state, reward, done, info = env.step(action)
+        print(info)
+        print(done)
+
+env.close()
+
+#Visualizing Agent-3
+for i in range(10):
+    done=False
+    obs = env.reset()
+    while not done:
+        env.render()
+        action, _states = model2.predict(obs)
+        next_state, reward, done, info = env.step(action)
+        print(info)
+        print(done)
+
+env.close()
+
+#Save and Load model
+model.save("highway")
+model = DQN.load("highway", env=env)
+
+model2.save("highway2")
+model2 = DQN.load("highway2",env=env)
